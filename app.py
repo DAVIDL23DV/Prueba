@@ -393,8 +393,13 @@ st.markdown("Por favor, sube el archivo Excel que contiene la información de la
 
 # Añadir el botón de descarga del archivo de ejemplo aquí
 st.markdown("Si no tienes un archivo de ejemplo, puedes descargar una plantilla de ejemplo aquí:")
-with open("/mnt/data/Plantilla Evaluacion de cartera.xlsx", "rb") as f:
-    st.download_button(label="Descargar plantilla de ejemplo", data=f, file_name="Plantilla_Evaluacion_de_cartera.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+# Asegúrate de que el archivo esté en la ruta correcta antes de intentar abrirlo.
+try:
+    with open("Plantilla Evaluacion de cartera.xlsx", "rb") as f:
+        st.download_button(label="Descargar plantilla de ejemplo", data=f, file_name="Plantilla_Evaluacion_de_cartera.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+except FileNotFoundError:
+    st.error("No se pudo encontrar la plantilla de ejemplo. Asegúrate de que el archivo está en la ubicación correcta.")
 
 # Aquí es donde se solicita el archivo Excel
 file_excel = st.file_uploader("Seleccione el archivo Excel con las carteras vencidas", type=["xlsx", "xls"])
