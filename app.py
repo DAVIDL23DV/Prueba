@@ -61,71 +61,82 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Formulario para obtener los datos de la empresa
-st.title("Auditoría Forense - Generador de Informes")
+# Función para generar el informe de Excel
+def generar_informe_excel(pagos_vencidos_90_dias):
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    file_name = f'CARTERA_DE_CLIENTES_VENCIDAS_{timestamp}.xlsx'
+    
+    # Crear un buffer en memoria
+    buffer = BytesIO()
+    
+    with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+        pagos_vencidos_90_dias.to_excel(writer, sheet_name='Vencidos_90_dias', index=False)
+    
+    st.success(f"Análisis completado. Resultados guardados en '{file_name}'.")
+    
+    # Colocar el buffer en la posición inicial
+    buffer.seek(0)
+    
+    # Descargar el archivo de Excel
+    st.download_button(label="Descargar archivo Excel", data=buffer, file_name=file_name, mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
-st.header("Información de la Empresa")
-nombre_empresa = st.text_input("Nombre de la Empresa")
-nombre_fraudador = st.text_input("Nombre del/los posibles defraudador(es)")
-personal_involucrado = st.text_area("Personal Involucrado")
-fecha_auditoria = st.date_input("Fecha de la Auditoría", datetime.today())
+# Función para extraer historial de clientes desde un archivo de Word
+def extraer_historial_clientes(file):
+    doc = Document(file)
+    historial_clientes = [para.text for para in doc.paragraphs]
+    return historial_clientes
 
-if st.button("Generar Informe"):
-    if not nombre_empresa or not nombre_fraudador or not personal_involucrado:
-        st.error("Por favor, complete todos los campos para generar el informe.")
-    else:
-        st.success(f"Datos de {nombre_empresa} capturados correctamente. Procediendo con la generación del informe...")
+# Función para generar el informe de Word
+def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria):
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    file_name = f'INFORME_AUDITORIA_{nombre_empresa}_{timestamp}.docx'
+    
+    doc = Document()
 
-        # Función para generar el informe de Word personalizado
-        def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria):
-            timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-            file_name = f'INFORME_AUDITORIA_{nombre_empresa}_{timestamp}.docx'
-            
-            doc = Document()
+    # Añadir contenido al informe
+    doc.add_heading(f'INFORME AUDITORIA {nombre_empresa.upper()}', 0)
 
-            # Añadir contenido al informe
-            doc.add_heading(f'INFORME AUDITORÍA {nombre_empresa.upper()}', 0)
+    # Índice
+    doc.add_paragraph('Índice')
+    indice = [
+        "1. Resumen Ejecutivo",
+        "2. Antecedentes",
+        "3. Alegaciones y Evaluación Inicial",
+        "4. Alcance",
+        "5. Metodología",
+        "6. Transacciones Revisadas y Hallazgos",
+        "7. Pruebas Realizadas",
+        "8. Resumen de Pruebas Realizadas",
+        "9. Cómo se Perpetró el Fraude",
+        "10. Identificación de los Sospechosos",
+        "11. Cuantificación de la Pérdida",
+        "12. Sugerencias de Mejora de los Controles Internos",
+        "13. Presencia del Auditor Forense en Procedimientos Judiciales",
+        "14. Anexos",
+        "15. Historial de Clientes Evaluados",
+        "16. Riesgos Potenciales de Fraude Adicionales",
+        "17. Patrones Inusuales",
+        "18. Señales de Advertencia y Métodos de Robo",
+        "19. Papeles de Trabajo"
+    ]
+    for item in indice:
+        doc.add_paragraph(item)
 
-            # Índice
-            doc.add_paragraph('Índice')
-            indice = [
-                "1. Resumen Ejecutivo",
-                "2. Antecedentes",
-                "3. Alegaciones y Evaluación Inicial",
-                "4. Alcance",
-                "5. Metodología",
-                "6. Transacciones Revisadas y Hallazgos",
-                "7. Pruebas Realizadas",
-                "8. Resumen de Pruebas Realizadas",
-                "9. Cómo se Perpetró el Fraude",
-                "10. Identificación de los Sospechosos",
-                "11. Cuantificación de la Pérdida",
-                "12. Sugerencias de Mejora de los Controles Internos",
-                "13. Presencia del Auditor Forense en Procedimientos Judiciales",
-                "14. Anexos",
-                "15. Historial de Clientes Evaluados",
-                "16. Riesgos Potenciales de Fraude Adicionales",
-                "17. Patrones Inusuales",
-                "18. Señales de Advertencia y Métodos de Robo",
-                "19. Papeles de Trabajo"
-            ]
-            for item in indice:
-                doc.add_paragraph(item)
+    # Resumen Ejecutivo
+    doc.add_heading('1. Resumen Ejecutivo', level=1)
+    doc.add_paragraph(
+        f"Este informe detalla los resultados de la auditoría forense realizada en '{nombre_empresa}' durante el año {fecha_auditoria.year}, en respuesta a sospechas de fraude por parte de {nombre_fraudador}. "
+        "Se identificaron discrepancias significativas entre los pagos de los clientes y los registros contables, lo que sugiere la posibilidad de que algunos miembros del personal "
+        f"de {personal_involucrado} estén desviando temporalmente fondos antes de registrarlos oficialmente.\n"
+        "La investigación reveló debilidades en los controles internos de la empresa, que pudieron haber facilitado estas actividades fraudulentas."
+    )
 
-            # Resumen Ejecutivo
-            doc.add_heading('1. Resumen Ejecutivo', level=1)
-            doc.add_paragraph(
-                f"Este informe detalla los resultados de la auditoría forense realizada en '{nombre_empresa}' durante el año {fecha_auditoria.year}, en respuesta a sospechas de fraude por parte de {nombre_fraudador}. "
-                "Se identificaron discrepancias significativas entre los pagos de los clientes y los registros contables, lo que sugiere la posibilidad de que algunos miembros del personal "
-                "estén desviando temporalmente fondos antes de registrarlos oficialmente."
-            )
-
-            # Antecedentes
-            doc.add_heading('2. Antecedentes', level=1)
-            doc.add_paragraph(
-                f"'{nombre_empresa}' es una empresa que recientemente ha notado discrepancias entre los pagos recibidos de los clientes y los registros contables oficiales. "
-                "Estas discrepancias, junto con denuncias internas, llevaron a la sospecha de que el personal involucrado podría estar cometiendo actividades fraudulentas."
-            )
+    # Antecedentes
+    doc.add_heading('2. Antecedentes', level=1)
+    doc.add_paragraph(
+        f"'{nombre_empresa}' es una empresa con una amplia cartera de clientes. Recientemente, la gerencia notó discrepancias entre los pagos recibidos de los clientes y los registros contables oficiales. "
+        "Estas discrepancias, junto con denuncias internas, llevaron a la sospecha de que el personal involucrado podría estar cometiendo actividades fraudulentas."
+    )
 
     # Alegaciones y Evaluación Inicial
     doc.add_heading('3. Alegaciones y Evaluación Inicial', level=1)
@@ -372,7 +383,7 @@ if st.button("Generar Informe"):
         "Esto puede ayudar a identificar discrepancias y posibles fraudes."
     )
 
-    # Guardar el documento de Word
+   # Guardar el documento de Word
     buffer = BytesIO()
     doc.save(buffer)
     buffer.seek(0)
@@ -430,32 +441,4 @@ Las principales funcionalidades incluyen:
 
 # Subir archivo Excel para análisis de carteras vencidas
 st.header("Subir archivo Excel")
-st.markdown("Por favor, sube el archivo Excel que contiene la información de las carteras vencidas.")
-
-# Añadir el botón de descarga del archivo de ejemplo aquí
-st.markdown("Si no tienes un archivo de ejemplo, puedes descargar una plantilla de ejemplo aquí:")
-
-# Asegúrate de que el archivo esté en la ruta correcta antes de intentar abrirlo.
-try:
-    with open("Plantilla Evaluacion de cartera.xlsx", "rb") as f:
-        st.download_button(label="Descargar plantilla de ejemplo", data=f, file_name="Plantilla_Evaluacion_de_cartera.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-except FileNotFoundError:
-    st.error("No se pudo encontrar la plantilla de ejemplo. Asegúrate de que el archivo está en la ubicación correcta.")
-
-# Aquí es donde se solicita el archivo Excel
-file_excel = st.file_uploader("Seleccione el archivo Excel con las carteras vencidas", type=["xlsx", "xls"])
-
-if file_excel:
-    pagos_vencidos_90_dias_df = analizar_anomalias_cartera(file_excel)
-
-    if pagos_vencidos_90_dias_df is not None:
-        generar_informe_excel(pagos_vencidos_90_dias_df)
-
-        # Subir archivo Word para historial de clientes
-        st.header("Subir archivo Word")
-        st.markdown("Opcional: Sube un archivo Word que contenga el historial de clientes que desees incluir en el informe final.")
-        file_word = st.file_uploader("Seleccione el archivo Word con el historial de clientes", type=["docx"])
-
-        if file_word:
-            historial_clientes = extraer_historial_clientes(file_word)
-            generar_informe_word(pagos_vencidos_90_dias_df, historial_clientes)
+st.markdown("Por favor, sube el archivo
