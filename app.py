@@ -441,4 +441,44 @@ Las principales funcionalidades incluyen:
 
 # Subir archivo Excel para análisis de carteras vencidas
 st.header("Subir archivo Excel")
-st.markdown("Por favor, sube el archivo
+st.markdown("Por favor, sube el archivo Excel que contiene la información de las carteras vencidas.")
+
+# Añadir el botón de descarga del archivo de ejemplo aquí
+st.markdown("Si no tienes un archivo de ejemplo, puedes descargar una plantilla de ejemplo aquí:")
+
+# Asegúrate de que el archivo esté en la ruta correcta antes de intentar abrirlo.
+try:
+    with open("Plantilla Evaluacion de cartera.xlsx", "rb") as f:
+        st.download_button(label="Descargar plantilla de ejemplo", data=f, file_name="Plantilla_Evaluacion_de_cartera.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+except FileNotFoundError:
+    st.error("No se pudo encontrar la plantilla de ejemplo. Asegúrate de que el archivo está en la ubicación correcta.")
+
+# Aquí es donde se solicita el archivo Excel
+file_excel = st.file_uploader("Seleccione el archivo Excel con las carteras vencidas", type=["xlsx", "xls"])
+
+if file_excel:
+    pagos_vencidos_90_dias_df = analizar_anomalias_cartera(file_excel)
+
+    if pagos_vencidos_90_dias_df is not None:
+        generar_informe_excel(pagos_vencidos_90_dias_df)
+
+        # Subir archivo Word para historial de clientes
+        st.header("Subir archivo Word")
+        st.markdown("Opcional: Sube un archivo Word que contenga el historial de clientes que desees incluir en el informe final.")
+        file_word = st.file_uploader("Seleccione el archivo Word con el historial de clientes", type=["docx"])
+
+        if file_word:
+            historial_clientes = extraer_historial_clientes(file_word)
+
+            # Aquí se solicita el formulario después de subir los archivos
+            st.header("Formulario de datos de la auditoría")
+            nombre_empresa = st.text_input("Nombre de la empresa")
+            nombre_fraudador = st.text_input("Nombre del posible defraudador")
+            personal_involucrado = st.text_input("Personal involucrado en el manejo de fondos")
+            fecha_auditoria = st.date_input("Fecha de la auditoría")
+
+            if st.button("Generar Informe de Auditoría"):
+                if nombre_empresa and nombre_fraudador and personal_involucrado and fecha_auditoria:
+                    generar_informe_word(pagos_vencidos_90_dias_df, historial_clientes, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria)
+                else:
+                    st.error("Por favor, complete todos los campos del formulario antes de generar el informe.")
