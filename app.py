@@ -367,9 +367,9 @@ def analizar_anomalias_cartera(file):
         return None
 
 # Streamlit UI
-st.title("Herramienta De Auditoría Forense")
+st.title("Auditoría Forense - Salud Total S.A.")
 st.markdown("""
-**Bienvenido a la herramienta de auditoría forense**. Esta aplicación está diseñada para ayudar en la identificación y análisis de anomalías en las cuentas por cobrar de las empresas, especialmente enfocándose en la detección de fraudes como el jineteo de cobranzas.
+**Bienvenido a la herramienta de auditoría forense de 'Salud Total S.A.'**. Esta aplicación está diseñada para ayudar en la identificación y análisis de anomalías en las cuentas por cobrar de la empresa, especialmente enfocándose en la detección de fraudes como el jineteo de cobranzas.
 """)
 
 st.header("Descripción de la herramienta")
@@ -390,6 +390,13 @@ Las principales funcionalidades incluyen:
 # Subir archivo Excel para análisis de carteras vencidas
 st.header("Subir archivo Excel")
 st.markdown("Por favor, sube el archivo Excel que contiene la información de las carteras vencidas.")
+
+# Añadir el botón de descarga del archivo de ejemplo aquí
+st.markdown("Si no tienes un archivo de ejemplo, puedes descargar una plantilla de ejemplo aquí:")
+with open("/mnt/data/Plantilla Evaluacion de cartera.xlsx", "rb") as f:
+    st.download_button(label="Descargar plantilla de ejemplo", data=f, file_name="Plantilla_Evaluacion_de_cartera.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+# Aquí es donde se solicita el archivo Excel
 file_excel = st.file_uploader("Seleccione el archivo Excel con las carteras vencidas", type=["xlsx", "xls"])
 
 if file_excel:
