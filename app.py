@@ -367,9 +367,9 @@ def analizar_anomalias_cartera(file):
         return None
 
 # Streamlit UI
-st.title("Auditoría Forense - Salud Total S.A.")
+st.title("Auditoría Forense")
 st.markdown("""
-**Bienvenido a la herramienta de auditoría forense de 'Salud Total S.A.'**. Esta aplicación está diseñada para ayudar en la identificación y análisis de anomalías en las cuentas por cobrar de la empresa, especialmente enfocándose en la detección de fraudes como el jineteo de cobranzas.
+**Bienvenido a la herramienta de auditoría forense**. Esta aplicación está diseñada para ayudar en la identificación y análisis de anomalías en las cuentas por cobrar de la empresa, especialmente enfocándose en la detección de fraudes como el jineteo de cobranzas.
 """)
 
 st.header("Descripción de la herramienta")
