@@ -383,7 +383,7 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, nombre_empr
         "Esto puede ayudar a identificar discrepancias y posibles fraudes."
     )
 
-   # Guardar el documento de Word
+    # Guardar el documento de Word
     buffer = BytesIO()
     doc.save(buffer)
     buffer.seek(0)
@@ -409,7 +409,7 @@ def analizar_anomalias_cartera(file):
             if not vencidos_90_dias.empty:
                 pagos_vencidos_90_dias.append(vencidos_90_dias)
         else:
-            st.error(f"Hoja {sheet_name} no contiene las columnas necesarias 'DÍAS DE MORA' y/o 'SALDO'.")
+            st.error(f"Hoja {sheet_name} no contiene las columnas necesarias 'DÍAS DE MORA' y/o'SALDO'.")
 
     if pagos_vencidos_90_dias:
         pagos_vencidos_90_dias_df = pd.concat(pagos_vencidos_90_dias, ignore_index=True)
@@ -474,11 +474,17 @@ if file_excel:
             st.header("Formulario de datos de la auditoría")
             nombre_empresa = st.text_input("Nombre de la empresa")
             nombre_fraudador = st.text_input("Nombre del posible defraudador")
-            personal_involucrado = st.text_input("Jefe de área en el manejo de fondos")
+            personal_involucrado = st.text_input("Personal involucrado en el manejo de fondos")
             fecha_auditoria = st.date_input("Fecha de la auditoría")
 
+            # Campo adicional para seleccionar el tipo de fraude
+            tipo_fraude = st.selectbox(
+                "Seleccione el tipo de fraude",
+                ["Fraude financiero", "Fraude por apropiación indebida de activos", "Corrupción"]
+            )
+
             if st.button("Generar Informe de Auditoría"):
-                if nombre_empresa and nombre_fraudador and personal_involucrado and fecha_auditoria:
-                    generar_informe_word(pagos_vencidos_90_dias_df, historial_clientes, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria)
+                if nombre_empresa and nombre_fraudador and personal_involucrado and fecha_auditoria and tipo_fraude:
+                    generar_informe_word(pagos_vencidos_90_dias_df, historial_clientes, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria, tipo_fraude)
                 else:
                     st.error("Por favor, complete todos los campos del formulario antes de generar el informe.")
