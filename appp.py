@@ -87,14 +87,14 @@ def extraer_historial_clientes(file):
     return historial_clientes
 
 # Función para generar el informe de Word
-def generar_informe_word(pagos_vencidos_90_dias, historial_clientes):
+def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    file_name = f'INFORME_AUDITORIA_SALUD_TOTAL_{timestamp}.docx'
+    file_name = f'INFORME_AUDITORIA_{nombre_empresa}_{timestamp}.docx'
     
     doc = Document()
 
     # Añadir contenido al informe
-    doc.add_heading('INFORME AUDITORIA SALUD TOTAL S.A', 0)
+    doc.add_heading(f'INFORME AUDITORIA {nombre_empresa.upper()}', 0)
 
     # Índice
     doc.add_paragraph('Índice')
@@ -125,26 +125,23 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes):
     # Resumen Ejecutivo
     doc.add_heading('1. Resumen Ejecutivo', level=1)
     doc.add_paragraph(
-        "Este informe detalla los resultados de la auditoría forense realizada en 'Salud Total S.A.' durante el año 2024, en respuesta a sospechas de fraude por jineteo de cobranzas. "
-        "Se identificaron discrepancias significativas entre los pagos de los clientes y los registros contables, lo que sugiere la posibilidad de que algunos miembros del personal de cobranzas "
-        "estén desviando temporalmente fondos antes de registrarlos oficialmente.\n"
-        "La investigación reveló debilidades en los controles internos de la empresa, que pudieron haber facilitado estas actividades fraudulentas. En particular, se observó que las carteras vencidas "
-        "a más de 90 días presentan un riesgo elevado de fraude, ya que es común que los patrones de comportamiento en estas cuentas muestren señales de manipulación y retención de pagos. "
-        "Identificar estos patrones es crucial para prevenir y detectar el jineteo de cobranzas, ya que permite enfocarse en las áreas de mayor riesgo y tomar acciones correctivas de manera oportuna.\n"
-        "Se proponen medidas correctivas para fortalecer los controles internos, mejorar la supervisión de las actividades de cobranzas, y mitigar el riesgo de futuros fraudes en la empresa."
+        f"Este informe detalla los resultados de la auditoría forense realizada en '{nombre_empresa}' durante el año {fecha_auditoria.year}, en respuesta a sospechas de fraude por parte de {nombre_fraudador}. "
+        "Se identificaron discrepancias significativas entre los pagos de los clientes y los registros contables, lo que sugiere la posibilidad de que algunos miembros del personal "
+        f"de {personal_involucrado} estén desviando temporalmente fondos antes de registrarlos oficialmente.\n"
+        "La investigación reveló debilidades en los controles internos de la empresa, que pudieron haber facilitado estas actividades fraudulentas."
     )
 
     # Antecedentes
     doc.add_heading('2. Antecedentes', level=1)
     doc.add_paragraph(
-        "'Salud Total S.A.' es una distribuidora farmacéutica con una amplia cartera de clientes a nivel nacional. Recientemente, la gerencia notó discrepancias entre los pagos recibidos de los clientes y los registros contables oficiales. "
-        "Estas discrepancias, junto con denuncias internas, llevaron a la sospecha de que el personal de cobranzas podría estar involucrado en actividades fraudulentas."
+        f"'{nombre_empresa}' es una empresa con una amplia cartera de clientes. Recientemente, la gerencia notó discrepancias entre los pagos recibidos de los clientes y los registros contables oficiales. "
+        "Estas discrepancias, junto con denuncias internas, llevaron a la sospecha de que el personal involucrado podría estar cometiendo actividades fraudulentas."
     )
 
     # Alegaciones y Evaluación Inicial
     doc.add_heading('3. Alegaciones y Evaluación Inicial', level=1)
     doc.add_paragraph(
-        "La gerencia de 'Salud Total S.A.' recibió múltiples informes que indicaban irregularidades en los cobros realizados por el personal de cobranzas. "
+        f"'{nombre_empresa}.' recibió múltiples informes que indicaban irregularidades en los cobros realizados por el personal de cobranzas. "
         "Se alegó que algunos pagos de clientes no coincidían con los registros contables y que los depósitos en las cuentas bancarias de la empresa se realizaban con retraso. "
         "Ante estas alegaciones, se decidió iniciar una auditoría forense para determinar la veracidad de las acusaciones y la magnitud del fraude."
     )
@@ -386,7 +383,7 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes):
         "Esto puede ayudar a identificar discrepancias y posibles fraudes."
     )
 
-    # Guardar el documento de Word
+   # Guardar el documento de Word
     buffer = BytesIO()
     doc.save(buffer)
     buffer.seek(0)
@@ -472,4 +469,16 @@ if file_excel:
 
         if file_word:
             historial_clientes = extraer_historial_clientes(file_word)
-            generar_informe_word(pagos_vencidos_90_dias_df, historial_clientes)
+
+            # Aquí se solicita el formulario después de subir los archivos
+            st.header("Formulario de datos de la auditoría")
+            nombre_empresa = st.text_input("Nombre de la empresa")
+            nombre_fraudador = st.text_input("Nombre del posible defraudador")
+            personal_involucrado = st.text_input("Personal involucrado en el manejo de fondos")
+            fecha_auditoria = st.date_input("Fecha de la auditoría")
+
+            if st.button("Generar Informe de Auditoría"):
+                if nombre_empresa and nombre_fraudador and personal_involucrado and fecha_auditoria:
+                    generar_informe_word(pagos_vencidos_90_dias_df, historial_clientes, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria)
+                else:
+                    st.error("Por favor, complete todos los campos del formulario antes de generar el informe.")
