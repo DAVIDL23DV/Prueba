@@ -237,7 +237,7 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, nombre_empr
     # Resumen de Pruebas Realizadas
     doc.add_heading('8. Resumen de Pruebas Realizadas', level=1)
     doc.add_paragraph(
-        "Las pruebas realizadas confirmaron la existencia de debilidades significativas en los controles internos de 'Salud Total S.A.'. "
+        "Las pruebas realizadas confirmaron la existencia de debilidades significativas en los controles internos de '{nombre_empresa}' "
         "Estas debilidades permitieron a algunos miembros del personal de cobranzas desviar temporalmente los pagos de clientes, manipular registros contables y retrasar los depósitos bancarios. "
         "La falta de supervisión y controles efectivos fue un factor clave que facilitó la ocurrencia del fraude."
     )
@@ -252,7 +252,7 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, nombre_empr
     # Identificación de los Sospechosos
     doc.add_heading('10. Identificación de los Sospechosos', level=1)
     doc.add_paragraph(
-        "El principal sospechoso identificado es Juan Pérez, cobrador de 'Salud Total S.A.'. Las pruebas indican que Juan Pérez tenía acceso no controlado a los fondos y la capacidad de manipular los registros contables. "
+        "El principal sospechoso identificado es Juan Pérez, cobrador de '{nombre_empresa}''. Las pruebas indican que Juan Pérez tenía acceso no controlado a los fondos y la capacidad de manipular los registros contables. "
         "No se encontraron evidencias de la participación de otros empleados en este fraude."
     )
 
