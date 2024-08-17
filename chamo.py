@@ -148,7 +148,7 @@ def analizar_logs_error_y_generar_informe(df):
         # 11. Anexos
         doc.add_heading('11. Anexos', level=2)
         doc.add_paragraph(
-            "• Anexo 1: Detalle de los Logs Analizados. Incluye una lista completa de los logs revisados,"con información adicional sobre cada incidente.\n"
+            "• Anexo 1: Detalle de los Logs Analizados. Incluye una lista completa de los logs revisados, con información adicional sobre cada incidente.\n"
             "• Anexo 2: Documentación de Normativas y Políticas. Citas y detalles de las normativas aplicadas en esta auditoría.\n"
             "• Anexo 3: Plan de Acción Detallado. Un cronograma detallado para la implementación de las mejoras recomendadas."
         )
