@@ -166,7 +166,7 @@ st.markdown("Si no tienes un archivo de ejemplo, puedes descargar una plantilla 
 
 # Asegúrate de que el archivo esté en la ruta correcta antes de intentar abrirlo.
 plantilla_path = "/mnt/data/PLANTILLA LOGS.xlsx"# Ruta del archivo proporcionadotry:
-    withopen(plantilla_path, "rb") as f:  # Aquí se corrigió el espacio faltante
+    withopen(plantilla_path, "rb") as f:  # Asegúrate de que hay un espacio entre 'with' y 'open'
         st.download_button(label="Descargar plantilla de ejemplo", data=f, file_name="PLANTILLA_LOGS.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 except FileNotFoundError:
     st.error("No se pudo encontrar la plantilla de ejemplo. Asegúrate de que el archivo está en la ubicación correcta.")
