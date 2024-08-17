@@ -166,7 +166,7 @@ st.title("Análisis de Logs de Error y Generación de Informe de Auditoría")
 st.markdown("Si no tienes un archivo de ejemplo, puedes descargar una plantilla de ejemplo aquí:")
 
 # Ruta del archivo proporcionado
-plantilla_path = "/mnt/data/Plantilla Evaluacion de cartera.xlsx"
+plantilla_path = "/mnt/data/PLANTILLA LOGS.xlsx"
 
 # Descargar la plantilla de ejemplo
 try:
