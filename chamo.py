@@ -162,12 +162,14 @@ def analizar_logs_error_y_generar_informe(df):
 st.title("Análisis de Logs de Error y Generación de Informe de Auditoría")
 
 # Enlace para descargar la plantilla
-plantilla_path = "/mnt/data/PLANTILLA LOGS.xlsx"
-with open(plantilla_path, "rb") as file:
-    st.download_button(label="Descargar Plantilla de Logs", data=file, file_name="PLANTILLA_LOGS.xlsx")
+plantilla_path = "/mnt/data/PLANTILLA LOGS.xlsx"# Asegúrate de que esta ruta sea correcta.if os.path.exists(plantilla_path):
+    withopen(plantilla_path, "rb") as file:
+        st.download_button(label="Descargar Plantilla de Logs", data=file, file_name="PLANTILLA_LOGS.xlsx")
+else:
+    st.error("No se pudo encontrar la plantilla en la ruta especificada.")
 
 archivo_subido = st.file_uploader("Cargue su archivo de Logs", type=["xlsx"])
 
-if archivo_subido is not None:
+if archivo_subido isnotNone:
     df = pd.read_excel(archivo_subido)
     analizar_logs_error_y_generar_informe(df)
