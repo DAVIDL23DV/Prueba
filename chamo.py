@@ -161,6 +161,11 @@ def analizar_logs_error_y_generar_informe(df):
 # Interfaz con Streamlit
 st.title("Análisis de Logs de Error y Generación de Informe de Auditoría")
 
+# Enlace para descargar la plantilla
+plantilla_path = "/mnt/data/PLANTILLA LOGS.xlsx"
+with open(plantilla_path, "rb") as file:
+    st.download_button(label="Descargar Plantilla de Logs", data=file, file_name="PLANTILLA_LOGS.xlsx")
+
 archivo_subido = st.file_uploader("Cargue su archivo de Logs", type=["xlsx"])
 
 if archivo_subido is not None:
