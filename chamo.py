@@ -153,6 +153,7 @@ def analizar_logs_error_y_generar_informe(df):
             "• Anexo 3: Plan de Acción Detallado. Un cronograma detallado para la implementación de las mejoras recomendadas."
         )
 
+        # Guardar el documento
         nombre_informe = 'Informe_Auditoria_Logs_Error.docx'
         doc.save(nombre_informe)
         st.success(f"Informe generado exitosamente en {nombre_informe}.")
@@ -164,15 +165,25 @@ st.title("Análisis de Logs de Error y Generación de Informe de Auditoría")
 # Añadir el botón de descarga del archivo de ejemplo aquí
 st.markdown("Si no tienes un archivo de ejemplo, puedes descargar una plantilla de ejemplo aquí:")
 
-# Asegúrate de que el archivo esté en la ruta correcta antes de intentar abrirlo.
-plantilla_path = "/mnt/data/PLANTILLA LOGS.xlsx"# Ruta del archivo proporcionadotry:
-    with open(plantilla_path, "rb") as f:  # Asegúrate de que hay un espacio entre 'with' y 'open'
-        st.download_button(label="Descargar plantilla de ejemplo", data=f, file_name="PLANTILLA_LOGS.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+# Ruta del archivo proporcionado
+plantilla_path = "/mnt/data/Plantilla Evaluacion de cartera.xlsx"
+
+# Descargar la plantilla de ejemplo
+try:
+    with open(plantilla_path, "rb") as f:
+        st.download_button(
+            label="Descargar plantilla de ejemplo",
+            data=f,
+            file_name="PLANTILLA_LOGS.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
 except FileNotFoundError:
     st.error("No se pudo encontrar la plantilla de ejemplo. Asegúrate de que el archivo está en la ubicación correcta.")
 
+# Subir el archivo de logs
 archivo_subido = st.file_uploader("Cargue su archivo de Logs", type=["xlsx"])
 
-if archivo_subido isnotNone:
+# Si el usuario ha cargado un archivo, se procesa
+if archivo_subido is not None:
     df = pd.read_excel(archivo_subido)
     analizar_logs_error_y_generar_informe(df)
