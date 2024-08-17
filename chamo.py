@@ -163,7 +163,7 @@ st.title("Análisis de Logs de Error y Generación de Informe de Auditoría")
 
 # Enlace para descargar la plantilla
 plantilla_path = "/mnt/data/PLANTILLA LOGS.xlsx"# Asegúrate de que esta ruta sea correcta.if os.path.exists(plantilla_path):
-    withopen(plantilla_path, "rb") as file:
+    withopen(plantilla_path, "rb") as file:  # Asegúrate de que hay un espacio entre 'with' y 'open'
         st.download_button(label="Descargar Plantilla de Logs", data=file, file_name="PLANTILLA_LOGS.xlsx")
 else:
     st.error("No se pudo encontrar la plantilla en la ruta especificada.")
