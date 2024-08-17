@@ -161,12 +161,15 @@ def analizar_logs_error_y_generar_informe(df):
 # Interfaz con Streamlit
 st.title("Análisis de Logs de Error y Generación de Informe de Auditoría")
 
-# Enlace para descargar la plantilla
-plantilla_path = "/mnt/data/PLANTILLA LOGS.xlsx"# Asegúrate de que esta ruta sea correcta.if os.path.exists(plantilla_path):
-    with y open(plantilla_path, "rb") as file:  # Asegúrate de que hay un espacio entre 'with' y 'open'
-        st.download_button(label="Descargar Plantilla de Logs", data=file, file_name="PLANTILLA_LOGS.xlsx")
-else:
-    st.error("No se pudo encontrar la plantilla en la ruta especificada.")
+# Añadir el botón de descarga del archivo de ejemplo aquí
+st.markdown("Si no tienes un archivo de ejemplo, puedes descargar una plantilla de ejemplo aquí:")
+
+# Asegúrate de que el archivo esté en la ruta correcta antes de intentar abrirlo.
+plantilla_path = "/mnt/data/PLANTILLA LOGS.xlsx"# Ruta del archivo proporcionadotry:
+    withopen(plantilla_path, "rb") as f:
+        st.download_button(label="Descargar plantilla de ejemplo", data=f, file_name="PLANTILLA_LOGS.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+except FileNotFoundError:
+    st.error("No se pudo encontrar la plantilla de ejemplo. Asegúrate de que el archivo está en la ubicación correcta.")
 
 archivo_subido = st.file_uploader("Cargue su archivo de Logs", type=["xlsx"])
 
