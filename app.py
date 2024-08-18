@@ -12,7 +12,7 @@ st.markdown("""
         /* Cambiar color de fondo y color de texto */
         .stApp {
             background-color: #f5f5f5;
-            color: #333333;
+            color: #000000;
         }
         
         /* Estilo para los encabezados */
