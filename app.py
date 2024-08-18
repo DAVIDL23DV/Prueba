@@ -478,7 +478,7 @@ if file_excel:
             fecha_auditoria = st.date_input("Fecha de la auditoría")
 
             if st.button("Generar Informe de Auditoría"):
-                if nombre_empresa and nombre_fraudador and personal_involucrado and fecha_auditoria:
+                if nombre_empresa and nombre_fraudador and jefe_personal_involucrado and fecha_auditoria:
                     generar_informe_word(pagos_vencidos_90_dias_df, historial_clientes, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria)
                 else:
                     st.error("Por favor, complete todos los campos del formulario antes de generar el informe.")
