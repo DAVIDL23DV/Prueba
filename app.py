@@ -225,7 +225,7 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, papeles_tra
         "• Se revisaron los registros de pago y se compararon con las fechas de depósito en las cuentas bancarias de la empresa.\n"
         "Resultado:\n"
         "• El análisis reveló que un número significativo de cuentas con antigüedad superior a 90 días presentaba discrepancias entre los registros de cobro y los depósitos bancarios. Estos hallazgos sugieren que estas cuentas están siendo manipuladas para retener temporalmente los fondos antes de ser registrados oficialmente."
-    )
+)
 
     # Resumen de Pruebas Realizadas
     doc.add_heading('8. Resumen de Pruebas Realizadas', level=1)
@@ -233,38 +233,38 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, papeles_tra
         f"Las pruebas realizadas confirmaron la existencia de debilidades significativas en los controles internos de '{nombre_empresa}'. "
         "Estas debilidades permitieron a algunos miembros del personal de cobranzas desviar temporalmente los pagos de clientes, manipular registros contables y retrasar los depósitos bancarios. "
         "La falta de supervisión y controles efectivos fue un factor clave que facilitó la ocurrencia del fraude."
-    )
+)
 
     # Cómo se Perpetró el Fraude
     doc.add_heading('9. Cómo se Perpetró el Fraude', level=1)
     doc.add_paragraph(
         "El fraude de jineteo de cobranzas posiblemente está siendo perpetrado por algunos miembros del personal de cobranzas, quienes aprovechan las debilidades en los controles internos para desviar temporalmente los pagos de clientes. "
         "Estas actividades fraudulentas son particularmente evidentes en las carteras vencidas a más de 90 días, donde los cobradores manipulan los registros y retrasan los depósitos en las cuentas de la empresa, lo que permite que los fondos sean retenidos temporalmente sin detección inmediata."
-    )
+)
 
     # Identificación de los Sospechosos
     doc.add_heading('10. Identificación de los Sospechosos', level=1)
     doc.add_paragraph(
         f"El principal sospechoso identificado es {nombre_fraudador}, cobrador de '{nombre_empresa}'. Las pruebas indican que {nombre_fraudador} tenía acceso no controlado a los fondos y la capacidad de manipular los registros contables. "
         "No se encontraron evidencias de la participación de otros empleados en este fraude."
-    )
+)
 
-    # Cuantificación de la Pérdida
+   # Cuantificación de la Pérdida
 doc.add_heading('11. Cuantificación de la Pérdida', level=1)
 perdida_total = pagos_vencidos_90_dias['SALDO'].sum()
 doc.add_paragraph(
     f"Estimación de la Pérdida: La pérdida financiera exacta aún no se ha determinado, pero se estima que podría alcanzar los ${perdida_total:,.2f}, considerando el valor de los pagos desviados temporalmente, los intereses perdidos y las posibles sanciones por incumplimiento de obligaciones fiscales."
 )
 
-    # Sugerencias de Mejora de los Controles Internos
-    doc.add_heading('12. Sugerencias de Mejora de los Controles Internos', level=1)
-    doc.add_paragraph(
-        "1. Mejora en la Segregación de Funciones: Implementar una segregación estricta de funciones para evitar que una sola persona tenga control total sobre los cobros y depósitos.\n"
-        "2. Supervisión de Depósitos: Establecer un proceso de verificación independiente para todos los depósitos bancarios realizados por el personal de cobranzas.\n"
-        "3. Automatización de Registros: Implementar un sistema automatizado para el registro de cobros que incluya alertas automáticas para discrepancias en montos y fechas.\n"
-        "4. Auditorías Periódicas: Realizar auditorías internas periódicas centradas en el área de cobranzas y manejo de efectivo.\n"
-        "5. Capacitación del Personal: Capacitar al personal en prácticas de gestión de riesgos y la importancia de la integridad en el manejo de fondos."
-    )
+# Sugerencias de Mejora de los Controles Internos
+doc.add_heading('12. Sugerencias de Mejora de los Controles Internos', level=1)
+doc.add_paragraph(
+    "1. Mejora en la Segregación de Funciones: Implementar una segregación estricta de funciones para evitar que una sola persona tenga control total sobre los cobros y depósitos.\n"
+    "2. Supervisión de Depósitos: Establecer un proceso de verificación independiente para todos los depósitos bancarios realizados por el personal de cobranzas.\n"
+    "3. Automatización de Registros: Implementar un sistema automatizado para el registro de cobros que incluya alertas automáticas para discrepancias en montos y fechas.\n"
+    "4. Auditorías Periódicas: Realizar auditorías internas periódicas centradas en el área de cobranzas y manejo de efectivo.\n"
+    "5. Capacitación del Personal: Capacitar al personal en prácticas de gestión de riesgos y la importancia de la integridad en el manejo de fondos."
+)
 
     # Presencia del Auditor Forense en Procedimientos Judiciales
     doc.add_heading('13. Presencia del Auditor Forense en Procedimientos Judiciales', level=1)
@@ -272,7 +272,7 @@ doc.add_paragraph(
         "El auditor forense deberá estar presente durante los procedimientos judiciales para presentar y explicar las pruebas recopiladas. "
         "Esto incluye demostrar cómo se identificó el fraude, la metodología utilizada, y la autenticidad de las pruebas. "
         "La presencia del auditor es crucial para respaldar la acusación contra los responsables y asegurar que la justicia se imparta adecuadamente."
-    )
+)
 
     # Anexos
     doc.add_heading('14. Anexos', level=1)
