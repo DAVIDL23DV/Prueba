@@ -266,42 +266,42 @@ doc.add_paragraph(
     "5. Capacitación del Personal: Capacitar al personal en prácticas de gestión de riesgos y la importancia de la integridad en el manejo de fondos."
 )
 
-    # Presencia del Auditor Forense en Procedimientos Judiciales
-    doc.add_heading('13. Presencia del Auditor Forense en Procedimientos Judiciales', level=1)
-    doc.add_paragraph(
-        "El auditor forense deberá estar presente durante los procedimientos judiciales para presentar y explicar las pruebas recopiladas. "
-        "Esto incluye demostrar cómo se identificó el fraude, la metodología utilizada, y la autenticidad de las pruebas. "
-        "La presencia del auditor es crucial para respaldar la acusación contra los responsables y asegurar que la justicia se imparta adecuadamente."
+# Presencia del Auditor Forense en Procedimientos Judiciales
+doc.add_heading('13. Presencia del Auditor Forense en Procedimientos Judiciales', level=1)
+doc.add_paragraph(
+    "El auditor forense deberá estar presente durante los procedimientos judiciales para presentar y explicar las pruebas recopiladas. "
+    "Esto incluye demostrar cómo se identificó el fraude, la metodología utilizada, y la autenticidad de las pruebas. "
+    "La presencia del auditor es crucial para respaldar la acusación contra los responsables y asegurar que la justicia se imparta adecuadamente."
 )
 
-    # Anexos
-    doc.add_heading('14. Anexos', level=1)
-    doc.add_paragraph(
-        "Anexo 1: Detalle de los registros de cobros y depósitos revisados.\n"
-        "Anexo 2: Transcripciones de entrevistas con el personal de cobranzas.\n"
-        "Anexo 3: Resultados del análisis de flujo de efectivo.\n"
-        "Anexo 4: Documentación sobre la revisión de permisos y roles.\n"
-        "Anexo 5: Análisis de antigüedad de la cartera de clientes."
-    )
+# Anexos
+doc.add_heading('14. Anexos', level=1)
+doc.add_paragraph(
+    "Anexo 1: Detalle de los registros de cobros y depósitos revisados.\n"
+    "Anexo 2: Transcripciones de entrevistas con el personal de cobranzas.\n"
+    "Anexo 3: Resultados del análisis de flujo de efectivo.\n"
+    "Anexo 4: Documentación sobre la revisión de permisos y roles.\n"
+    "Anexo 5: Análisis de antigüedad de la cartera de clientes."
+)
 
-    # Historial de Clientes Evaluados
-    doc.add_heading('15. Historial de Clientes Evaluados', level=1)
-    for cliente in historial_clientes:
-        doc.add_paragraph(cliente, style='Normal')
+# Historial de Clientes Evaluados
+doc.add_heading('15. Historial de Clientes Evaluados', level=1)
+for cliente in historial_clientes:
+    doc.add_paragraph(cliente, style='Normal')
 
-    # Riesgos Potenciales de Fraude Adicionales
-    doc.add_heading('16. Riesgos Potenciales de Fraude Adicionales', level=1)
-    doc.add_paragraph(
-        "Durante la auditoría, se identificaron otros posibles riesgos de fraude que requieren atención:"
-    )
-    riesgos = [
-        "Retención de pagos por períodos prolongados antes de su registro oficial.",
-        "Ajustes frecuentes en las cuentas sin justificación adecuada.",
-        "Discrepancias entre las cantidades registradas y los depósitos reales.",
-        "Falta de supervisión efectiva en los procesos de autorización de pagos."
-    ]
-    for riesgo in riesgos:
-        doc.add_paragraph(f"• {riesgo}")
+# Riesgos Potenciales de Fraude Adicionales
+doc.add_heading('16. Riesgos Potenciales de Fraude Adicionales', level=1)
+doc.add_paragraph(
+    "Durante la auditoría, se identificaron otros posibles riesgos de fraude que requieren atención:"
+)
+riesgos = [
+    "Retención de pagos por períodos prolongados antes de su registro oficial.",
+    "Ajustes frecuentes en las cuentas sin justificación adecuada.",
+    "Discrepancias entre las cantidades registradas y los depósitos reales.",
+    "Falta de supervisión efectiva en los procesos de autorización de pagos."
+]
+for riesgo in riesgos:
+    doc.add_paragraph(f"• {riesgo}")
 
     # Patrones inusuales que pueden indicar jineteo de fondos
     doc.add_heading('17. Patrones Inusuales', level=1)
