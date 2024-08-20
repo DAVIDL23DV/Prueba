@@ -5,6 +5,7 @@ from docx.shared import Pt
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from datetime import datetime
 from io import BytesIO
+from PIL import Image
 
 # Estilos personalizados
 st.markdown("""
@@ -87,7 +88,7 @@ def extraer_historial_clientes(file):
     return historial_clientes
 
 # Función para generar el informe de Word
-def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, papeles_trabajo_df, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria):
+def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, imagenes_papeles, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     file_name = f'INFORME_AUDITORIA_{nombre_empresa}_{timestamp}.docx'
     
@@ -237,7 +238,7 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, papeles_tra
     # Resumen de Pruebas Realizadas
     doc.add_heading('8. Resumen de Pruebas Realizadas', level=1)
     doc.add_paragraph(
-        "Las pruebas realizadas confirmaron la existencia de debilidades significativas en los controles internos de '{nombre_empresa}' "
+        f"Las pruebas realizadas confirmaron la existencia de debilidades significativas en los controles internos de '{nombre_empresa}'. "
         "Estas debilidades permitieron a algunos miembros del personal de cobranzas desviar temporalmente los pagos de clientes, manipular registros contables y retrasar los depósitos bancarios. "
         "La falta de supervisión y controles efectivos fue un factor clave que facilitó la ocurrencia del fraude."
     )
@@ -245,20 +246,20 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, papeles_tra
     # Cómo se Perpetró el Fraude
     doc.add_heading('9. Cómo se Perpetró el Fraude', level=1)
     doc.add_paragraph(
-        "El fraude de jineteo de cobranzas posiblemente está siendo perpetrado por algunos miembros del personal de cobranzas, quienes aprovechan las debilidades en los controles internos para desviar temporalmente los pagos de clientes. "
+        f"El fraude de jineteo de cobranzas posiblemente está siendo perpetrado por algunos miembros del personal de cobranzas, quienes aprovechan las debilidades en los controles internos para desviar temporalmente los pagos de clientes. "
         "Estas actividades fraudulentas son particularmente evidentes en las carteras vencidas a más de 90 días, donde los cobradores manipulan los registros y retrasan los depósitos en las cuentas de la empresa, lo que permite que los fondos sean retenidos temporalmente sin detección inmediata."
     )
 
     # Identificación de los Sospechosos
     doc.add_heading('10. Identificación de los Sospechosos', level=1)
     doc.add_paragraph(
-        "El principal sospechoso identificado es Juan Pérez, cobrador de '{nombre_empresa}'. Las pruebas indican que Juan Pérez tenía acceso no controlado a los fondos y la capacidad de manipular los registros contables. "
+        f"El principal sospechoso identificado es {nombre_fraudador}, cobrador de '{nombre_empresa}'. Las pruebas indican que {nombre_fraudador} tenía acceso no controlado a los fondos y la capacidad de manipular los registros contables. "
         "No se encontraron evidencias de la participación de otros empleados en este fraude."
     )
 
     # Cuantificación de la Pérdida
-    doc.add_heading('11. Cuantificación de la Pérdida', level=1)
     perdida_total = pagos_vencidos_90_dias['SALDO'].sum()
+    doc.add_heading('11. Cuantificación de la Pérdida', level=1)
     doc.add_paragraph(
         f"Estimación de la Pérdida: La pérdida financiera exacta aún no se ha determinado, pero se estima que podría alcanzar los ${perdida_total:,.2f}, considerando el valor de los pagos desviados temporalmente, los intereses perdidos y las posibles sanciones por incumplimiento de obligaciones fiscales."
     )
@@ -366,18 +367,17 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, papeles_tra
 
     # Papeles de Trabajo
     doc.add_heading('19. Papeles de Trabajo', level=1)
-    
-    # Añadir el contenido del Excel de papeles de trabajo al informe
-    table = doc.add_table(rows=1, cols=len(papeles_trabajo_df.columns))
-    hdr_cells = table.rows[0].cells
-    for i, column in enumerate(papeles_trabajo_df.columns):
-        hdr_cells[i].text = column
-        hdr_cells[i].paragraphs[0].runs[0].font.bold = True
+    doc.add_paragraph(
+        "A continuación se incluyen las imágenes correspondientes a los papeles de trabajo:"
+    )
 
-    for index, row in papeles_trabajo_df.iterrows():
-        row_cells = table.add_row().cells
-        for i, cell in enumerate(row):
-            row_cells[i].text = str(cell)
+    for imagen in imagenes_papeles:
+        doc.add_paragraph()
+        doc.add_picture(imagen, width=docx.shared.Inches(5.0))  # Ajusta el tamaño de la imagen según sea necesario
+
+    doc.add_paragraph(
+        "Estos papeles de trabajo respaldan los hallazgos y conclusiones presentados en este informe."
+    )
 
     # Guardar el documento de Word
     buffer = BytesIO()
@@ -414,12 +414,6 @@ def analizar_anomalias_cartera(file):
         st.warning("No se encontraron pagos vencidos a más de 90 días.")
         return None
 
-# Función para analizar los papeles de trabajo desde un archivo de Excel
-def analizar_papeles_trabajo(file):
-    df = pd.read_excel(file)
-    df.columns = df.columns.str.strip()
-    return df
-
 # Streamlit UI
 st.title("Auditoría Forense")
 st.markdown("""
@@ -436,14 +430,14 @@ Las principales funcionalidades incluyen:
 - **Detección de fraudes**: Identificación de patrones inusuales que podrían indicar actividades fraudulentas, como el jineteo de cobranzas.
 
 ### Instrucciones de uso:
-1. **Subir archivo Excel de cartera vencida**: Carga el archivo de Excel con las carteras vencidas para iniciar el análisis.
-2. **Subir archivo Word del historial de clientes** (opcional): Carga un archivo de Word con el historial de clientes para incluir en el informe.
-3. **Subir archivo Excel de papeles de trabajo**: Carga un archivo de Excel con los papeles de trabajo para incluirlos en el informe.
+1. **Subir archivo Excel**: Carga el archivo de Excel con las carteras vencidas para iniciar el análisis.
+2. **Subir archivo Word** (opcional): Carga un archivo de Word con el historial de clientes para incluir en el informe.
+3. **Subir imágenes (JPG)**: Carga imágenes en formato JPG para los papeles de trabajo que se incluirán en el informe.
 4. **Descargar informes**: Una vez procesados los datos, descarga los informes generados en los formatos proporcionados.
 """)
 
 # Subir archivo Excel para análisis de carteras vencidas
-st.header("Subir archivo Excel de cartera vencida")
+st.header("Subir archivo Excel")
 st.markdown("Por favor, sube el archivo Excel que contiene la información de las carteras vencidas.")
 
 # Añadir el botón de descarga del archivo de ejemplo aquí
@@ -456,48 +450,44 @@ try:
 except FileNotFoundError:
     st.error("No se pudo encontrar la plantilla de ejemplo. Asegúrate de que el archivo está en la ubicación correcta.")
 
-# Aquí es donde se solicita el archivo Excel de cartera vencida
-file_excel_cartera = st.file_uploader("Seleccione el archivo Excel con las carteras vencidas", type=["xlsx", "xls"])
+# Aquí es donde se solicita el archivo Excel
+file_excel = st.file_uploader("Seleccione el archivo Excel con las carteras vencidas", type=["xlsx", "xls"])
 
-if file_excel_cartera:
-    pagos_vencidos_90_dias_df = analizar_anomalias_cartera(file_excel_cartera)
+if file_excel:
+    pagos_vencidos_90_dias_df = analizar_anomalias_cartera(file_excel)
 
     if pagos_vencidos_90_dias_df is not None:
         generar_informe_excel(pagos_vencidos_90_dias_df)
 
         # Subir archivo Word para historial de clientes
-        st.header("Subir archivo Word del historial de clientes")
+        st.header("Subir archivo Word")
         st.markdown("Opcional: Sube un archivo Word que contenga el historial de clientes que desees incluir en el informe final.")
         file_word = st.file_uploader("Seleccione el archivo Word con el historial de clientes", type=["docx"])
 
         if file_word:
             historial_clientes = extraer_historial_clientes(file_word)
-
-            # Subir archivo Excel para papeles de trabajo
-            st.header("Subir archivo Excel de papeles de trabajo")
-            st.markdown("Por favor, sube el archivo Excel que contiene los papeles de trabajo que deseas incluir en el informe final.")
-            file_excel_papeles = st.file_uploader("Seleccione el archivo Excel con los papeles de trabajo", type=["xlsx", "xls"])
-
-            if file_excel_papeles:
-                papeles_trabajo_df = analizar_papeles_trabajo(file_excel_papeles)
-
-                # Aquí se solicita el formulario después de subir los archivos
-                st.header("Formulario de datos de la auditoría")
-                nombre_empresa = st.text_input("Nombre de la empresa")
-                nombre_fraudador = st.text_input("Nombre del posible defraudador")
-                jefe_personal_involucrado = st.text_input("Jefe del Personal involucrado en el manejo de fondos")
-                fecha_auditoria = st.date_input("Fecha de la auditoría")
-
-                if st.button("Generar Informe de Auditoría"):
-                    if nombre_empresa and nombre_fraudador and jefe_personal_involucrado and fecha_auditoria:
-                        generar_informe_word(pagos_vencidos_90_dias_df, historial_clientes, papeles_trabajo_df, nombre_empresa, nombre_fraudador, jefe_personal_involucrado, fecha_auditoria)
-                    else:
-                        st.error("Por favor, complete todos los campos del formulario antes de generar el informe.")
-            else:
-                st.warning("Por favor, sube el archivo Excel con los papeles de trabajo.")
         else:
-            st.warning("Por favor, sube el archivo Word con el historial de clientes.")
-    else:
-        st.warning("No se encontraron datos válidos en el archivo de cartera vencida.")
-else:
-    st.warning("Por favor, sube el archivo Excel con las carteras vencidas.")
+            historial_clientes = []
+
+        # Subir imágenes para los papeles de trabajo
+        st.header("Subir imágenes de Papeles de Trabajo")
+        st.markdown("Por favor, sube las imágenes en formato JPG que se incluirán en la sección de Papeles de Trabajo del informe.")
+        imagenes_papeles = st.file_uploader("Seleccione las imágenes", type=["jpg", "jpeg"], accept_multiple_files=True)
+
+        if imagenes_papeles:
+            imagenes_papeles_paths = [Image.open(imagen) for imagen in imagenes_papeles]
+        else:
+            imagenes_papeles_paths = []
+
+        # Aquí se solicita el formulario después de subir los archivos
+        st.header("Formulario de datos de la auditoría")
+        nombre_empresa = st.text_input("Nombre de la empresa")
+        nombre_fraudador = st.text_input("Nombre del posible defraudador")
+        jefe_personal_involucrado = st.text_input("Jefe del Personal involucrado en el manejo de fondos")
+        fecha_auditoria = st.date_input("Fecha de la auditoría")
+
+        if st.button("Generar Informe de Auditoría"):
+            if nombre_empresa and nombre_fraudador and jefe_personal_involucrado and fecha_auditoria:
+                generar_informe_word(pagos_vencidos_90_dias_df, historial_clientes, imagenes_papeles_paths, nombre_empresa, nombre_fraudador, jefe_personal_involucrado, fecha_auditoria)
+            else:
+                st.error("Por favor, complete todos los campos del formulario antes de generar el informe.")
