@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 from docx import Document
-from docx.shared import Pt
+from docx.shared import Pt, Inches
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from datetime import datetime
 from io import BytesIO
