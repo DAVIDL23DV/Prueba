@@ -250,10 +250,11 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, papeles_tra
     )
 
     # Cuantificación de la Pérdida
-    doc.add_heading('11. Cuantificación de la Pérdida_total = pagos_vencidos_90_dias['SALDO'].sum()
-    doc.add_paragraph(
-        f"Estimación de la Pérdida: La pérdida financiera exacta aún no se ha determinado, pero se estima que podría alcanzar los ${perdida_total:,.2f}, considerando el valor de los pagos desviados temporalmente, los intereses perdidos y las posibles sanciones por incumplimiento de obligaciones fiscales."
-    )
+doc.add_heading('11. Cuantificación de la Pérdida', level=1)
+perdida_total = pagos_vencidos_90_dias['SALDO'].sum()
+doc.add_paragraph(
+    f"Estimación de la Pérdida: La pérdida financiera exacta aún no se ha determinado, pero se estima que podría alcanzar los ${perdida_total:,.2f}, considerando el valor de los pagos desviados temporalmente, los intereses perdidos y las posibles sanciones por incumplimiento de obligaciones fiscales."
+)
 
     # Sugerencias de Mejora de los Controles Internos
     doc.add_heading('12. Sugerencias de Mejora de los Controles Internos', level=1)
