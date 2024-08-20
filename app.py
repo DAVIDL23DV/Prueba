@@ -449,7 +449,7 @@ if file_excel:
         # Subir archivo Word para historial de clientes
         st.header("Subir archivo Word")
         st.markdown("Opcional: Sube un archivo Word que contenga el historial de clientes que desees incluir en el informe final.")
-        file_word = st.file_uploader("Seleccione el archivo file_word = st.file_uploader("Seleccione el archivo Word con el historial de clientes", type=["docx"])
+        file_word = st.file_uploader("Seleccione el archivo Word con el historial de clientes", type=["docx"])
 
         if file_word:
             historial_clientes = extraer_historial_clientes(file_word)
