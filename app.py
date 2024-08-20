@@ -5,7 +5,6 @@ from docx.shared import Pt, Inches
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from datetime import datetime
 from io import BytesIO
-from PIL import Image
 
 # Estilos personalizados
 st.markdown("""
@@ -19,7 +18,7 @@ st.markdown("""
         /* Estilo para los encabezados */
         h1, h2, h3 {
             color: #4B8BBE;
-            font-family: 'Times New Roman', sans-serif;
+            font-family: 'Times New Romans', sans-serif;
         }
 
         /* Estilo para el texto */
@@ -88,7 +87,7 @@ def extraer_historial_clientes(file):
     return historial_clientes
 
 # Función para generar el informe de Word
-def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, imagenes_papeles, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria):
+def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, imagenes_papeles_paths, nombre_empresa, nombre_fraudador, personal_involucrado, fecha_auditoria):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     file_name = f'INFORME_AUDITORIA_{nombre_empresa}_{timestamp}.docx'
     
@@ -142,7 +141,7 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, imagenes_pa
     # Alegaciones y Evaluación Inicial
     doc.add_heading('3. Alegaciones y Evaluación Inicial', level=1)
     doc.add_paragraph(
-        f"'{nombre_empresa}' recibió múltiples informes que indicaban irregularidades en los cobros realizados por el personal de cobranzas. "
+        f"'{nombre_empresa}.' recibió múltiples informes que indicaban irregularidades en los cobros realizados por el personal de cobranzas. "
         "Se alegó que algunos pagos de clientes no coincidían con los registros contables y que los depósitos en las cuentas bancarias de la empresa se realizaban con retraso. "
         "Ante estas alegaciones, se decidió iniciar una auditoría forense para determinar la veracidad de las acusaciones y la magnitud del fraude."
     )
@@ -238,7 +237,7 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, imagenes_pa
     # Resumen de Pruebas Realizadas
     doc.add_heading('8. Resumen de Pruebas Realizadas', level=1)
     doc.add_paragraph(
-        f"Las pruebas realizadas confirmaron la existencia de debilidades significativas en los controles internos de '{nombre_empresa}'. "
+        "Las pruebas realizadas confirmaron la existencia de debilidades significativas en los controles internos de '{nombre_empresa}' "
         "Estas debilidades permitieron a algunos miembros del personal de cobranzas desviar temporalmente los pagos de clientes, manipular registros contables y retrasar los depósitos bancarios. "
         "La falta de supervisión y controles efectivos fue un factor clave que facilitó la ocurrencia del fraude."
     )
@@ -246,7 +245,7 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, imagenes_pa
     # Cómo se Perpetró el Fraude
     doc.add_heading('9. Cómo se Perpetró el Fraude', level=1)
     doc.add_paragraph(
-        f"El fraude de jineteo de cobranzas posiblemente está siendo perpetrado por algunos miembros del personal de cobranzas, quienes aprovechan las debilidades en los controles internos para desviar temporalmente los pagos de clientes. "
+        "El fraude de jineteo de cobranzas posiblemente está siendo perpetrado por algunos miembros del personal de cobranzas, quienes aprovechan las debilidades en los controles internos para desviar temporalmente los pagos de clientes. "
         "Estas actividades fraudulentas son particularmente evidentes en las carteras vencidas a más de 90 días, donde los cobradores manipulan los registros y retrasan los depósitos en las cuentas de la empresa, lo que permite que los fondos sean retenidos temporalmente sin detección inmediata."
     )
 
@@ -258,8 +257,8 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, imagenes_pa
     )
 
     # Cuantificación de la Pérdida
-    perdida_total = pagos_vencidos_90_dias['SALDO'].sum()
     doc.add_heading('11. Cuantificación de la Pérdida', level=1)
+    perdida_total = pagos_vencidos_90_dias['SALDO'].sum()
     doc.add_paragraph(
         f"Estimación de la Pérdida: La pérdida financiera exacta aún no se ha determinado, pero se estima que podría alcanzar los ${perdida_total:,.2f}, considerando el valor de los pagos desviados temporalmente, los intereses perdidos y las posibles sanciones por incumplimiento de obligaciones fiscales."
     )
@@ -291,27 +290,6 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, imagenes_pa
         "Anexo 4: Documentación sobre la revisión de permisos y roles.\n"
         "Anexo 5: Análisis de antigüedad de la cartera de clientes."
     )
-
-    # Datos de pagos vencidos a más de 90 días
-    doc.add_heading('Datos de Pagos Vencidos a Más de 90 Días', level=1)
-    table = doc.add_table(rows=1, cols=len(pagos_vencidos_90_dias.columns))
-    table.alignment = WD_TABLE_ALIGNMENT.CENTER
-
-    hdr_cells = table.rows[0].cells
-    for i, column in enumerate(pagos_vencidos_90_dias.columns):
-        hdr_cells[i].text = column
-        hdr_cells[i].paragraphs[0].runs[0].font.bold = True
-
-    for index, row in pagos_vencidos_90_dias.iterrows():
-        row_cells = table.add_row().cells
-        for i, cell in enumerate(row):
-            row_cells[i].text = str(cell)
-
-    # Ajustar estilo de la tabla
-    table.style = 'Table Grid'
-    for row in table.rows:
-        for cell in row.cells:
-            cell.vertical_alignment = WD_TABLE_ALIGNMENT.CENTER
 
     # Historial de Clientes Evaluados
     doc.add_heading('15. Historial de Clientes Evaluados', level=1)
@@ -368,16 +346,26 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, imagenes_pa
     # Papeles de Trabajo
     doc.add_heading('19. Papeles de Trabajo', level=1)
     doc.add_paragraph(
-        "A continuación se incluyen las imágenes correspondientes a los papeles de trabajo:"
+        "Para descubrir este tipo de fraude, los auditores deben realizar una serie de procedimientos detallados, incluyendo:"
     )
-
-    for imagen in imagenes_papeles:
-        doc.add_paragraph()
-        doc.add_picture(imagen, width=docx.shared.Inches(5.0))  # Ajusta el tamaño de la imagen según sea necesario
+    procedimientos = [
+        "Comparación de los registros de pagos con los extractos bancarios para asegurar que los pagos fueron depositados en tiempo y forma.",
+        "Verificación de los procedimientos de autorización y registro de pagos.",
+        "Análisis de patrones inusuales en los registros de pagos y depósitos.",
+        "Evaluación de la segregación de funciones en el proceso de manejo de pagos."
+    ]
+    for procedimiento in procedimientos:
+        doc.add_paragraph(f"• {procedimiento}")
 
     doc.add_paragraph(
-        "Estos papeles de trabajo respaldan los hallazgos y conclusiones presentados en este informe."
+        "Además, es importante realizar entrevistas y confirmar directamente con los clientes los pagos realizados y sus fechas. "
+        "Esto puede ayudar a identificar discrepancias y posibles fraudes."
     )
+
+    # Agregar imágenes de papeles de trabajo
+    doc.add_heading('Imágenes de Papeles de Trabajo', level=2)
+    for imagen in imagenes_papeles_paths:
+        doc.add_picture(imagen, width=Inches(5.0))  # Ajusta el tamaño de la imagen según sea necesario
 
     # Guardar el documento de Word
     buffer = BytesIO()
@@ -432,7 +420,7 @@ Las principales funcionalidades incluyen:
 ### Instrucciones de uso:
 1. **Subir archivo Excel**: Carga el archivo de Excel con las carteras vencidas para iniciar el análisis.
 2. **Subir archivo Word** (opcional): Carga un archivo de Word con el historial de clientes para incluir en el informe.
-3. **Subir imágenes (JPG)**: Carga imágenes en formato JPG para los papeles de trabajo que se incluirán en el informe.
+3. **Subir imágenes de papeles de trabajo**: Sube las imágenes en formato JPG que deseas incluir en los papeles de trabajo.
 4. **Descargar informes**: Una vez procesados los datos, descarga los informes generados en los formatos proporcionados.
 """)
 
@@ -443,14 +431,13 @@ st.markdown("Por favor, sube el archivo Excel que contiene la información de la
 # Añadir el botón de descarga del archivo de ejemplo aquí
 st.markdown("Si no tienes un archivo de ejemplo, puedes descargar una plantilla de ejemplo aquí:")
 
-# Asegúrate de que el archivo esté en la ruta correcta antes de intentar abrirlo.
 try:
     with open("Plantilla Evaluacion de cartera.xlsx", "rb") as f:
         st.download_button(label="Descargar plantilla de ejemplo", data=f, file_name="Plantilla_Evaluacion_de_cartera.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 except FileNotFoundError:
     st.error("No se pudo encontrar la plantilla de ejemplo. Asegúrate de que el archivo está en la ubicación correcta.")
 
-# Aquí es donde se solicita el archivo Excel
+# Solicitar archivo Excel
 file_excel = st.file_uploader("Seleccione el archivo Excel con las carteras vencidas", type=["xlsx", "xls"])
 
 if file_excel:
@@ -462,24 +449,30 @@ if file_excel:
         # Subir archivo Word para historial de clientes
         st.header("Subir archivo Word")
         st.markdown("Opcional: Sube un archivo Word que contenga el historial de clientes que desees incluir en el informe final.")
-        file_word = st.file_uploader("Seleccione el archivo Word con el historial de clientes", type=["docx"])
+        file_word = st.file_uploader("Seleccione el archivo file_word = st.file_uploader("Seleccione el archivo Word con el historial de clientes", type=["docx"])
 
         if file_word:
             historial_clientes = extraer_historial_clientes(file_word)
         else:
             historial_clientes = []
 
-        # Subir imágenes para los papeles de trabajo
+        # Subir imágenes de papeles de trabajo
         st.header("Subir imágenes de Papeles de Trabajo")
-        st.markdown("Por favor, sube las imágenes en formato JPG que se incluirán en la sección de Papeles de Trabajo del informe.")
-        imagenes_papeles = st.file_uploader("Seleccione las imágenes", type=["jpg", "jpeg"], accept_multiple_files=True)
+        st.markdown("Sube las imágenes en formato JPG que deseas incluir en los papeles de trabajo del informe final.")
+        imagenes_papeles = st.file_uploader("Seleccione las imágenes de papeles de trabajo", type=["jpg", "jpeg"], accept_multiple_files=True)
 
         if imagenes_papeles:
-            imagenes_papeles_paths = [Image.open(imagen) for imagen in imagenes_papeles]
+            # Guardar las imágenes temporalmente
+            imagenes_papeles_paths = []
+            for img in imagenes_papeles:
+                image_path = f"/tmp/{img.name}"
+                with open(image_path, "wb") as f:
+                    f.write(img.getbuffer())
+                imagenes_papeles_paths.append(image_path)
         else:
             imagenes_papeles_paths = []
 
-        # Aquí se solicita el formulario después de subir los archivos
+        # Formulario para ingresar datos adicionales
         st.header("Formulario de datos de la auditoría")
         nombre_empresa = st.text_input("Nombre de la empresa")
         nombre_fraudador = st.text_input("Nombre del posible defraudador")
