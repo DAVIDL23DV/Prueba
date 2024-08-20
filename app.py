@@ -11,25 +11,25 @@ st.markdown("""
     <style>
         /* Cambiar color de fondo y color de texto */
         .stApp {
-            background-color: #f5f5f5;
-            color: #000000;
+            background-color: #000000;
+            color: #FFFFFF;
         }
         
         /* Estilo para los encabezados */
         h1, h2, h3 {
             color: #4B8BBE;
-            font-family: 'Arial Black', sans-serif;
+            font-family: 'Times New Romans', sans-serif;
         }
 
         /* Estilo para el texto */
         p, li {
             font-family: 'Arial', sans-serif;
-            color: #333333;
+            color: #FFFFFF;
         }
 
         /* Estilo para el botón de descarga */
         .stDownloadButton {
-            background-color: #FF6F61;
+            background-color: #FF0000;
             color: white;
             border-radius: 10px;
         }
