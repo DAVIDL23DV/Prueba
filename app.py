@@ -237,7 +237,7 @@ def generar_informe_word(pagos_vencidos_90_dias, historial_clientes, imagenes_pa
     # Resumen de Pruebas Realizadas
     doc.add_heading('8. Resumen de Pruebas Realizadas', level=1)
     doc.add_paragraph(
-        "Las pruebas realizadas confirmaron la existencia de debilidades significativas en los controles internos de '{nombre_empresa}' "
+        f"Las pruebas realizadas confirmaron la existencia de debilidades significativas en los controles internos de {nombre_empresa}"
         "Estas debilidades permitieron a algunos miembros del personal de cobranzas desviar temporalmente los pagos de clientes, manipular registros contables y retrasar los depósitos bancarios. "
         "La falta de supervisión y controles efectivos fue un factor clave que facilitó la ocurrencia del fraude."
     )
