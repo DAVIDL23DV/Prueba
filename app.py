@@ -420,7 +420,7 @@ Las principales funcionalidades incluyen:
 ### Instrucciones de uso:
 1. **Subir archivo Excel**: Carga el archivo de Excel con las carteras vencidas para iniciar el análisis.
 2. **Subir archivo Word** (opcional): Carga un archivo de Word con el historial de clientes para incluir en el informe.
-3. **Subir imágenes de papeles de trabajo**: Sube las imágenes en formato JPG que deseas incluir en los papeles de trabajo.
+3. **Subir imágenes de papeles de trabajo**: Suba aquí los papeles de trabajo en formato JPG que desee incluir en el informe.
 4. **Descargar informes**: Una vez procesados los datos, descarga los informes generados en los formatos proporcionados.
 """)
 
