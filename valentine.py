@@ -57,18 +57,18 @@ if "intentos_no" not in st.session_state:
 # Contenedor con diseño bonito
 st.markdown("<div class='main'>", unsafe_allow_html=True)
 
-st.title("💖 ¿Quieres ser mi San Valentín? 💖")
+st.title("💖 ¿Would You Be My Valentine? 💖")
 
 # Mostrar la imagen personalizada
-st.image(imagen_personal, caption="Nuestra mejor foto juntos 💕", use_column_width=True)
+st.image(imagen_personal, caption="De nuestro viajecito a Quito gg love u amor 💕", use_column_width=True)
 
 # Lógica para manejar respuestas
 if st.session_state.estado == "inicio":
-    st.subheader("Esta es una invitación especial para ti ❤️")
+    st.subheader("Special Invitation ❤️")
     
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("Sí, quiero! 💘", key="si_1", help="Haz clic para aceptar!", use_container_width=True):
+        if st.button("Yes, si quiero y siempre yes! 💘", key="si_1", help="Haz clic para aceptar!", use_container_width=True):
             st.session_state.estado = "aceptado"
     with col2:
         if st.button("No... 😢", key="no_1", use_container_width=True):
