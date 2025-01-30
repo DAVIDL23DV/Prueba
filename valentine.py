@@ -106,8 +106,8 @@ elif st.session_state.estado == "seguro":
 
 elif st.session_state.estado == "aceptado":
     st.balloons()
-    st.subheader("💖 ¡Yujuuu! Sabía que dirías que sí 🥰💖")
-    st.write("¡Nos espera un San Valentín increíble juntos! 🌹✨")
+    st.subheader("💖 ¡Yujuuu! Sabía que dirías que sí LOVE YOU POOKIE 🥰💖")
+    st.write("¡LET´S GO EAT MICHAEL´S GG! 🌹✨")
     
     # ✅ Agregar el video directamente sin `try-except`
     st.video(video_personal)
