@@ -1,8 +1,8 @@
 import streamlit as st
 
-# Ruta de la imagen subida (debes asegurarte de que la imagen esté en la misma carpeta que el script)
-imagen_personal = "Imagen de WhatsApp 2024-11-13 a las 23.46.15_58c7ab86.jpg"
-video_personal = "Video de WhatsApp 2025-01-30 a las 12.18.39_bc275536.mp4"  # Video agregado
+# Rutas de los archivos subidos
+imagen_personal = "/mnt/data/Imagen de WhatsApp 2024-11-13 a las 23.46.15_58c7ab86.jpg"
+video_personal = "/mnt/data/Video de WhatsApp 2025-01-30 a las 12.18.39_bc275536.mp4"
 
 # Estilo de fondo con CSS (Color conche de vino + corazones <3)
 page_bg_img = """
@@ -60,8 +60,11 @@ st.markdown("<div class='main'>", unsafe_allow_html=True)
 
 st.title("💖 ¿Would You Be My Valentine? 💖")
 
-# Mostrar la imagen personalizada
-st.image(imagen_personal, caption="De nuestro viajecito a Quito gg love u amor 💕", use_column_width=True)
+# Mostrar la imagen personalizada (verificar si el archivo existe)
+try:
+    st.image(imagen_personal, caption="De nuestro viajecito a Quito gg love u amor 💕", use_container_width=True)
+except Exception as e:
+    st.error("No se pudo cargar la imagen 😢. Asegúrate de que el archivo está correctamente subido.")
 
 # Lógica para manejar respuestas
 if st.session_state.estado == "inicio":
@@ -78,7 +81,7 @@ if st.session_state.estado == "inicio":
 
 elif st.session_state.estado == "seguro":
     mensajes_no = [
-        "¿Segura/o? Podemos ir a michael´s :3... 🥺",
+        "¿Segura? Podemos ir a michael´s :3... 🥺",
         "Piensa en todas las flores que te daría... 🌹💌",
         "¿En serio me vas a romper el corazón así? 💔😭",
         "Vamos, dime que sí y te prometo una sorpresa especial... 🎁💖",
@@ -110,6 +113,9 @@ elif st.session_state.estado == "aceptado":
     st.write("¡Nos espera un San Valentín increíble juntos! 🌹✨")
     
     # Agregar el video especial después de aceptar
-    st.video(video_personal)
+    try:
+        st.video(video_personal)
+    except Exception as e:
+        st.error("No se pudo cargar el video 😢. Asegúrate de que el archivo está correctamente subido.")
 
 st.markdown("</div>", unsafe_allow_html=True)
