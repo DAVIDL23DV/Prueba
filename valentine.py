@@ -1,20 +1,45 @@
 import streamlit as st
-import random
 
-# Imagen de fondo con CSS
+# Ruta de la imagen subida (debes asegurarte de que la imagen esté en la misma carpeta que el script)
+imagen_personal = "Imagen de WhatsApp 2024-11-13 a las 23.46.15_58c7ab86.jpg"
+
+# Estilo de fondo con CSS (Color conche de vino + corazones <3)
 page_bg_img = """
 <style>
     body {
-        background-image: url("https://images.unsplash.com/photo-1516641394681-8c35c322b412");
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
+        background-color: #800020;
+        color: white;
+        font-family: Arial, sans-serif;
     }
     .main {
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.15);
         padding: 20px;
         border-radius: 15px;
         text-align: center;
+        color: white;
+    }
+    /* Corazones flotando en el fondo */
+    body::before {
+        content: "<3    <3    <3    <3    <3    <3    <3";
+        font-size: 30px;
+        font-weight: bold;
+        color: pink;
+        position: fixed;
+        top: 10%;
+        left: 5%;
+        white-space: nowrap;
+        opacity: 0.5;
+    }
+    body::after {
+        content: "<3    <3    <3    <3    <3    <3    <3";
+        font-size: 30px;
+        font-weight: bold;
+        color: pink;
+        position: fixed;
+        bottom: 10%;
+        right: 5%;
+        white-space: nowrap;
+        opacity: 0.5;
     }
 </style>
 """
@@ -29,25 +54,16 @@ if "tamanio_si" not in st.session_state:
 if "intentos_no" not in st.session_state:
     st.session_state.intentos_no = 0  # Contador de rechazos
 
-# Lista de mensajes aleatorios para cuando diga "No"
-mensajes_no = [
-    "¿Segura/o? Yo tenía un chocolate para ti... 🍫🥺",
-    "Piensa en todas las flores y cartas que te daría... 🌹💌",
-    "¿En serio me vas a romper el corazón así? 💔😭",
-    "Vamos, dime que sí y te prometo una sorpresa especial... 🎁💖",
-    "¿Ni aunque te invite a una cena romántica? 🍽️🥂",
-    "No lo pienses demasiado, el amor está en el aire... 💕✨",
-    "Di que sí, ¡somos el match perfecto! 😍🔥"
-]
-
 # Contenedor con diseño bonito
 st.markdown("<div class='main'>", unsafe_allow_html=True)
 
 st.title("💖 ¿Quieres ser mi San Valentín? 💖")
 
-# Lógica para manejar respuestas con imágenes y cambios en el tamaño del botón "Sí"
+# Mostrar la imagen personalizada
+st.image(imagen_personal, caption="Nuestra mejor foto juntos 💕", use_column_width=True)
+
+# Lógica para manejar respuestas
 if st.session_state.estado == "inicio":
-    st.image("https://i.pinimg.com/originals/5b/15/57/5b155775e580a3039bb0f3e9acbc154e.gif", width=300)  # Imagen inicial
     st.subheader("Esta es una invitación especial para ti ❤️")
     
     col1, col2 = st.columns([1, 1])
@@ -60,8 +76,18 @@ if st.session_state.estado == "inicio":
             st.session_state.intentos_no += 1  # Incrementar contador de rechazos
 
 elif st.session_state.estado == "seguro":
-    st.image("https://media1.tenor.com/m/TPbczMykUzIAAAAC/crying.gif", width=300)  # Imagen triste
-    mensaje_aleatorio = random.choice(mensajes_no)  # Elegir un mensaje aleatorio
+    mensajes_no = [
+        "¿Segura/o? Podemos ir a michael´s :3... 🥺",
+        "Piensa en todas las flores te daría... 🌹💌",
+        "¿En serio me vas a romper el corazón así? 💔😭",
+        "Vamos, dime que sí y te prometo una sorpresa especial... 🎁💖",
+        "¿Ni aunque te invite a una cena romántica? 🍽️🥂",
+        "F... 💕✨",
+        "Di que sí, ILY 😍🔥"
+    ]
+    from random import choice
+    mensaje_aleatorio = choice(mensajes_no)
+    
     st.subheader(mensaje_aleatorio)
     
     # Incrementar el tamaño del botón "Sí" cada vez que dice "No"
@@ -70,8 +96,7 @@ elif st.session_state.estado == "seguro":
     col1, col2 = st.columns([1, 1])
     with col1:
         if st.button(f"Sí, quiero! 💘", key=f"si_{st.session_state.intentos_no}", 
-                     help="No puedes resistirte 😘", use_container_width=True, 
-                     args=(st.session_state.tamanio_si,)):
+                     help="No puedes resistirte 😘", use_container_width=True):
             st.session_state.estado = "aceptado"
     with col2:
         if st.button("No... 😭", key=f"no_{st.session_state.intentos_no}", use_container_width=True):
@@ -80,8 +105,8 @@ elif st.session_state.estado == "seguro":
 
 elif st.session_state.estado == "aceptado":
     st.balloons()
-    st.image("https://media1.tenor.com/m/cFDbD6jZxDoAAAAd/cute-love.gif", width=300)  # Imagen feliz
     st.subheader("💖 ¡Yujuuu! Sabía que dirías que sí 🥰💖")
     st.write("¡Nos espera un San Valentín increíble juntos! 🌹✨")
 
 st.markdown("</div>", unsafe_allow_html=True)
+
