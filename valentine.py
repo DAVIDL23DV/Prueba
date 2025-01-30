@@ -2,6 +2,7 @@ import streamlit as st
 
 # Ruta de la imagen subida (debes asegurarte de que la imagen esté en la misma carpeta que el script)
 imagen_personal = "Imagen de WhatsApp 2024-11-13 a las 23.46.15_58c7ab86.jpg"
+video_personal = "Video de WhatsApp 2025-01-30 a las 12.18.39_bc275536.mp4"  # Video agregado
 
 # Estilo de fondo con CSS (Color conche de vino + corazones <3)
 page_bg_img = """
@@ -78,7 +79,7 @@ if st.session_state.estado == "inicio":
 elif st.session_state.estado == "seguro":
     mensajes_no = [
         "¿Segura/o? Podemos ir a michael´s :3... 🥺",
-        "Piensa en todas las flores te daría... 🌹💌",
+        "Piensa en todas las flores que te daría... 🌹💌",
         "¿En serio me vas a romper el corazón así? 💔😭",
         "Vamos, dime que sí y te prometo una sorpresa especial... 🎁💖",
         "¿Ni aunque te invite a una cena romántica? 🍽️🥂",
@@ -107,6 +108,8 @@ elif st.session_state.estado == "aceptado":
     st.balloons()
     st.subheader("💖 ¡Yujuuu! Sabía que dirías que sí 🥰💖")
     st.write("¡Nos espera un San Valentín increíble juntos! 🌹✨")
+    
+    # Agregar el video especial después de aceptar
+    st.video(video_personal)
 
 st.markdown("</div>", unsafe_allow_html=True)
-
